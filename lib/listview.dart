@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'detailpage.dart';
 
 class ListViewScreen extends StatefulWidget {
@@ -9,29 +12,16 @@ class ListViewScreen extends StatefulWidget {
 }
 
 class _ListViewScreenState extends State<ListViewScreen> {
-  List<String> imageList = [
-    '2.jpg',
-    '3.jpg',
-    '4.jpg',
-    '5.jpg',
-    '6.jpg',
-    '7.jpg',
-    '8.jpg',
-    '9.jpg',
-    '10.png'
-  ];
-
-  List<String> customImageNames = [
-    'Con thỏ1',
-    'Con mèo1',
-    'Con cáo',
-    'Con gấu',
-    'Con mèo 2',
-    'Con thỏ 2',
-    'Con mèo 3',
-    'Con khủng long',
-    'Con panda'
-  ];
+   List<MyData> _data = [];
+ @override
+  void initState() {
+    super.initState();
+    loadData().then((data) {
+      setState(() {
+        _data = data;
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,7 +34,7 @@ class _ListViewScreenState extends State<ListViewScreen> {
       ),
       body: ListView.builder(
         scrollDirection: Axis.vertical,
-        itemCount: imageList.length,
+        itemCount: _data.length,
         itemBuilder: (context, index) {
           return Card(
             child: Padding(
@@ -52,7 +42,7 @@ class _ListViewScreenState extends State<ListViewScreen> {
               child: Row(
                 children: [
                   Image.asset(
-                    'assets/images/${imageList[index]}',
+                    'assets/images/${_data[index].imagePath}',
                     fit: BoxFit.cover,
                     width: 100,
                     height: 100,
@@ -62,7 +52,7 @@ class _ListViewScreenState extends State<ListViewScreen> {
                   ),
                   Column(
                     children: [
-                      Text(customImageNames[index]),
+                      Text(_data[index].name),
                       ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
@@ -74,7 +64,7 @@ class _ListViewScreenState extends State<ListViewScreen> {
                             if (index == 0) {
                               Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => DetailPage(
-                                    imageName: customImageNames[index]),
+                                    imageName: _data[index].name,),
                               ));
                             } else {}
                           },
@@ -89,4 +79,24 @@ class _ListViewScreenState extends State<ListViewScreen> {
       ),
     );
   }
+}
+
+class MyData {
+  final String name;
+  final String imagePath;
+
+  MyData({required this.name, required this.imagePath});
+
+  factory MyData.fromJson(Map<String, dynamic> json) {
+    return MyData(
+      name: json['name'],
+      imagePath: json['imagePath'],
+    );
+  }
+}
+
+Future<List<MyData>> loadData() async {
+  final String jsonString = await rootBundle.loadString("assets/file.json");
+  final List<dynamic> jsonList = json.decode(jsonString);
+  return jsonList.map((json) => MyData.fromJson(json)).toList();
 }
