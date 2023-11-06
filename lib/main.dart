@@ -477,7 +477,6 @@ class _GridViewScreenState extends State<GridViewScreen> {
 
   void _handleImageTap(int index) {
     if (index == 0) {
-      // Navigate to the new screen when the button in the first item is pressed
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -485,11 +484,7 @@ class _GridViewScreenState extends State<GridViewScreen> {
               DetailScreen(imageName: customImageNames[index]),
         ),
       );
-    } else {
-      // Handle other button presses (if needed)
-    }
-
-    // Xử lý sự kiện khi hình ảnh được nhấn
+    } else {}
   }
 
   @override
@@ -551,7 +546,7 @@ class _GridViewScreenState extends State<GridViewScreen> {
                       ),
                       onPressed: () {
                         _handleImageTap(
-                            index); // Xử lý sự kiện khi nút được nhấn
+                            index); 
                       },
                       child: const Text('Detail'),
                     ),
@@ -582,7 +577,6 @@ class DetailScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(imageName),
-            // Add other content for your detail screen
           ],
         ),
       ),
@@ -665,9 +659,7 @@ class _ListViewScreenState extends State<ListViewScreen> {
                                 builder: (context) => DetailPage(
                                     imageName: customImageNames[index]),
                               ));
-                            } else {
-                              // Handle other items' button presses here
-                            }
+                            } else {}
                           },
                           child: const Text('Detail'))
                     ],
@@ -698,7 +690,6 @@ class DetailPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(imageName),
-            // Add other content for your detail screen
           ],
         ),
       ),
