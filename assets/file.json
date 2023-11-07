@@ -1,37 +1,46 @@
 [
   {
+    "id": 1,
     "name": "Con thỏ 1",
     "imagePath": "2.jpg"
   },
   {
+    "id": 2,
     "name": "Con mèo 1",
     "imagePath": "3.jpg"
   },
   {
+    "id": 3,
     "name": "Con cáo",
     "imagePath": "4.jpg"
   },
   {
+    "id": 4,
     "name": "Con gấu",
     "imagePath": "5.jpg"
   },
   {
+    "id": 5,
     "name": "Con mèo 2",
     "imagePath": "6.jpg"
   },
   {
+    "id": 6,
     "name": "Con thỏ 2",
     "imagePath": "7.jpg"
   },
   {
+    "id": 7,
     "name": "Con mèo 3",
     "imagePath": "8.jpg"
   },
   {
+    "id": 8,
     "name": "Con khủng long",
     "imagePath": "9.jpg"
   },
   {
+    "id": 9,
     "name": "Con panda",
     "imagePath": "10.png"
   }

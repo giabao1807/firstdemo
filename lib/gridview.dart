@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'detailscreen.dart';
 
 
@@ -10,37 +13,24 @@ class GridViewScreen extends StatefulWidget {
 }
 
 class _GridViewScreenState extends State<GridViewScreen> {
-  List<String> imageList = [
-    '2.jpg',
-    '3.jpg',
-    '4.jpg',
-    '5.jpg',
-    '6.jpg',
-    '7.jpg',
-    '8.jpg',
-    '9.jpg',
-    '10.png'
-  ];
-
-  List<String> customImageNames = [
-    'Con thỏ1',
-    'Con mèo1',
-    'Con cáo',
-    'Con gấu',
-    'Con mèo 2',
-    'Con thỏ 2',
-    'Con mèo 3',
-    'Con khủng long',
-    'Con panda'
-  ];
-
+  
+List<MyData> _data = [];
+ @override
+  void initState() {
+    super.initState();
+    loadData().then((data) {
+      setState(() {
+        _data = data;
+      });
+    });
+  }
   void _handleImageTap(int index) {
     if (index == 0) {
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) =>
-              DetailScreen(imageName: customImageNames[index]),
+              DetailScreen(imageName:_data[index].name,),
         ),
       );
     } else {}
@@ -61,7 +51,7 @@ class _GridViewScreenState extends State<GridViewScreen> {
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: GridView.builder(
-            itemCount: imageList.length,
+            itemCount: _data.length,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 crossAxisSpacing: 5,
@@ -79,7 +69,7 @@ class _GridViewScreenState extends State<GridViewScreen> {
                         borderRadius: BorderRadius.circular(15.0),
                         image: DecorationImage(
                             image:
-                                AssetImage('assets/images/${imageList[index]}'),
+                                AssetImage('assets/images/${_data[index].imagePath}'),
                             fit: BoxFit.cover),
                       ),
                     ),
@@ -87,7 +77,7 @@ class _GridViewScreenState extends State<GridViewScreen> {
                       height: 5,
                     ),
                     Text(
-                      customImageNames[index],
+                      _data[index].name,
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
@@ -117,4 +107,24 @@ class _GridViewScreenState extends State<GridViewScreen> {
       ),
     );
   }
+}
+
+class MyData {
+  final String name;
+  final String imagePath;
+
+  MyData({required this.name, required this.imagePath});
+
+  factory MyData.fromJson(Map<String, dynamic> json) {
+    return MyData(
+      name: json['name'],
+      imagePath: json['imagePath'],
+    );
+  }
+}
+
+Future<List<MyData>> loadData() async {
+  final String jsonString = await rootBundle.loadString("assets/file.json");
+  final List<dynamic> jsonList = json.decode(jsonString);
+  return jsonList.map((json) => MyData.fromJson(json)).toList();
 }
