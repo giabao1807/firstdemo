@@ -1,7 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter/services.dart';
+
 import 'detailpage.dart';
 
 class ListViewScreen extends StatefulWidget {
@@ -17,12 +18,15 @@ class _ListViewScreenState extends State<ListViewScreen> {
   @override
   void initState() {
     super.initState();
-    loadData().then((data) {
-      setState(() {
-        _data = data;
-      });
+    loadDataFromAssets().then((data) {
+      if (data != null) {
+        setState(() {
+          _data = data;
+        });
+      }
     });
   }
+
   void _showAddItemDialog() {
     String newItemName = '';
     String newItemImagePath = '';
@@ -31,12 +35,12 @@ class _ListViewScreenState extends State<ListViewScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Add New Item'),
+          title: const Text('Add New Image'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               TextField(
-                decoration: const InputDecoration(labelText: 'Item Name'),
+                decoration: const InputDecoration(labelText: 'Name'),
                 onChanged: (value) {
                   newItemName = value;
                 },
@@ -126,15 +130,24 @@ class _ListViewScreenState extends State<ListViewScreen> {
                                     imageName: _data[index].name,
                                   ),
                                 ));
-                              } else {
-                                // Handle the action for other items.
-                              }
+                              } else {}
                             },
                             child: const Text('Detail'),
                           ),
                         ],
                       ),
                     ],
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(right: 70.0),
+                    child: IconButton(
+                      icon: const Icon(Icons.delete),
+                      onPressed: () {
+                        setState(() {
+                          _data.removeAt(index);
+                        });
+                      },
+                    ),
                   ),
                 ],
               ),
@@ -143,6 +156,8 @@ class _ListViewScreenState extends State<ListViewScreen> {
         },
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.blue.shade900,
+        foregroundColor: Colors.white,
         onPressed: () {
           _showAddItemDialog();
         },
@@ -159,6 +174,14 @@ class MyData {
 
   MyData({required this.id, required this.name, required this.imagePath});
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'imagePath': imagePath,
+    };
+  }
+
   factory MyData.fromJson(Map<String, dynamic> json) {
     return MyData(
       id: json['id'],
@@ -168,8 +191,8 @@ class MyData {
   }
 }
 
-Future<List<MyData>> loadData() async {
-  final String jsonString = await rootBundle.loadString("assets/file.json");
+Future<List<MyData>> loadDataFromAssets() async {
+  final String jsonString = await rootBundle.loadString('assets/file.json');
   final List<dynamic> jsonList = json.decode(jsonString);
   return jsonList.map((json) => MyData.fromJson(json)).toList();
 }
