@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'transform.dart';
-import 'localization.dart';
+import 'rxdart.dart';
 
 class HeroScreen extends StatelessWidget {
   const HeroScreen({super.key});
@@ -22,7 +22,7 @@ class HeroScreen extends StatelessWidget {
             GestureDetector(
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const LocalizationScreen()));
+                      builder: (context) => const RxDart()));
                 },
                 child: Hero(
                     tag: 'imageHero',
