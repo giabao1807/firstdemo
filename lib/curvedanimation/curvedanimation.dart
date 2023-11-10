@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'transform.dart';
+import '../transform.dart';
 
 class CurvedAnimationScreen extends StatefulWidget {
   const CurvedAnimationScreen({super.key});

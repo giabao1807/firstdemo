@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'transform.dart';
 import 'rxdart.dart';
+import 'blocpattern.dart';
 
 class HeroScreen extends StatelessWidget {
   const HeroScreen({super.key});
@@ -21,12 +22,15 @@ class HeroScreen extends StatelessWidget {
           children: [
             GestureDetector(
                 onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const RxDart()));
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => const RxDart()));
                 },
                 child: Hero(
                     tag: 'imageHero',
                     child: Image.asset('assets/images/4.jpg'))),
+            const SizedBox(
+              height: 20,
+            ),
             ElevatedButton(
                 onPressed: () {
                   Navigator.push(
@@ -35,6 +39,17 @@ class HeroScreen extends StatelessWidget {
                           builder: (context) => const TransformScreen()));
                 },
                 child: const Text('Transform Button')),
+            const SizedBox(
+              height: 20,
+            ),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>  const BlocScreen()));
+                },
+                child: const Text('Bloc Button')),
           ],
         ),
       ),

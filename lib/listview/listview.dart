@@ -19,12 +19,10 @@ class _ListViewScreenState extends State<ListViewScreen> {
   void initState() {
     super.initState();
     loadDataFromAssets().then((data) {
-      if (data != null) {
-        setState(() {
-          _data = data;
+      setState(() {
+        _data = data;
+      });
         });
-      }
-    });
   }
 
   void _showAddItemDialog() {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'gridview.dart';
-import 'listview.dart';
-import 'curvedanimation.dart';
+import 'gridview/gridview.dart';
+import 'listview/listview.dart';
+import 'curvedanimation/curvedanimation.dart';
 
 
 
@@ -46,7 +46,7 @@ class _ExpansionScreenState extends State<ExpansionScreen> {
           ),
           ListTile(
             textColor: Colors.green,
-            title: const Text('Curved Animation '),
+            title: const Text('Curved Animation'),
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => const CurvedAnimationScreen(),

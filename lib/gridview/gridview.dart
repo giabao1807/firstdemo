@@ -17,12 +17,10 @@ class _GridViewScreenState extends State<GridViewScreen> {
   void initState() {
     super.initState();
     loadDataFromAssets().then((data) {
-      if (data != null) {
-        setState(() {
-          _data = data;
+      setState(() {
+        _data = data;
+      });
         });
-      }
-    });
   }
 
   void _handleImageTap(int index) {
