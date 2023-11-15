@@ -1,8 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
+import 'db_helper.dart';
 import 'detailpage.dart';
 
 class ListViewScreen extends StatefulWidget {
@@ -18,11 +16,14 @@ class _ListViewScreenState extends State<ListViewScreen> {
   @override
   void initState() {
     super.initState();
-    loadDataFromAssets().then((data) {
-      setState(() {
-        _data = data;
-      });
-        });
+    _loadDataFromDatabase();
+  }
+
+  Future<void> _loadDataFromDatabase() async {
+    List<MyData> data = await DBHelper.instance.getData();
+    setState(() {
+      _data = data;
+    });
   }
 
   void _showAddItemDialog() {
@@ -59,17 +60,18 @@ class _ListViewScreenState extends State<ListViewScreen> {
               child: const Text('Cancel'),
             ),
             TextButton(
-              onPressed: () {
+              onPressed: () async {
                 final newItem = MyData(
-                  id: _data.length + 1,
                   name: newItemName,
                   imagePath: newItemImagePath,
                 );
 
+                int id = await DBHelper.instance.insertData(newItem);
+
                 setState(() {
+                  newItem.id = id;
                   _data.add(newItem);
                 });
-
                 Navigator.of(context).pop(); // Close the dialog
               },
               child: const Text('Add'),
@@ -166,13 +168,13 @@ class _ListViewScreenState extends State<ListViewScreen> {
 }
 
 class MyData {
-  final int id;
+  int? id;
   final String name;
   final String imagePath;
 
-  MyData({required this.id, required this.name, required this.imagePath});
+  MyData({this.id, required this.name, required this.imagePath});
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toMap() {
     return {
       'id': id,
       'name': name,
@@ -180,17 +182,11 @@ class MyData {
     };
   }
 
-  factory MyData.fromJson(Map<String, dynamic> json) {
+  factory MyData.fromMap(Map<String, dynamic> map) {
     return MyData(
-      id: json['id'],
-      name: json['name'],
-      imagePath: json['imagePath'],
+      id: map['id'],
+      name: map['name'],
+      imagePath: map['imagePath'],
     );
   }
-}
-
-Future<List<MyData>> loadDataFromAssets() async {
-  final String jsonString = await rootBundle.loadString('assets/file.json');
-  final List<dynamic> jsonList = json.decode(jsonString);
-  return jsonList.map((json) => MyData.fromJson(json)).toList();
 }

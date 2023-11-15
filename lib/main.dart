@@ -5,9 +5,7 @@ import 'expansion.dart';
 import 'hero.dart';
 import 'videoapp.dart';
 
-
 //import 'package:video_player/video_player.dart';
-
 
 void main() {
   runApp(const MaterialApp(home: MyApp()));
@@ -44,6 +42,7 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
         home: Scaffold(
       appBar: AppBar(
         leading: IconButton(onPressed: () {}, icon: const Icon(Icons.menu)),
@@ -188,5 +187,3 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
     ));
   }
 }
-
-
