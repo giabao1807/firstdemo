@@ -43,5 +43,10 @@
     "id": 9,
     "name": "Con panda",
     "imagePath": "10.png"
+  },
+  {
+    "id": 10,
+    "name": "Con cáo 1",
+    "imagePath": "11.jpg"
   }
 ]

@@ -1,23 +1,23 @@
-import 'package:firstdemo/gridview/db.helper.dart';
+import 'package:firstdemo/listview/sql.helper.dart';
 import 'package:flutter/material.dart';
 
-import 'detailscreen.dart';
+import 'detailpage.dart';
 
-
-class GridViewScreen extends StatefulWidget {
-  const GridViewScreen({super.key});
+class ListViewScreen extends StatefulWidget {
+  const ListViewScreen({super.key});
 
   @override
-  State<GridViewScreen> createState() => _GridViewScreenState();
+  State<ListViewScreen> createState() => _ListViewScreenState();
 }
 
-class _GridViewScreenState extends State<GridViewScreen> {
+class _ListViewScreenState extends State<ListViewScreen> {
   List<Map<String, dynamic>> _data = [];
 
   void _refreshData() async {
-    final data = await DBHelper.getItems();
+    final data = await SQLHelper.getItems();
     setState(() {
       _data = data;
+      
     });
   }
 
@@ -25,18 +25,18 @@ class _GridViewScreenState extends State<GridViewScreen> {
   final TextEditingController _imagePathController = TextEditingController();
 
   Future<void> _addItem() async {
-    await DBHelper.createItem(_nameController.text, _imagePathController.text);
+    await SQLHelper.createItem(_nameController.text, _imagePathController.text);
     _refreshData();
   }
 
   Future<void> _updateItem(int id) async {
-    await DBHelper.updateItem(
+    await SQLHelper.updateItem(
         id, _nameController.text, _imagePathController.text);
     _refreshData();
   }
 
   void _deleteItem(int id) async {
-    await DBHelper.deleteItem(id);
+    await SQLHelper.deleteItem(id);
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       backgroundColor: Colors.redAccent,
       content: Text('Successfully Deleted'),
@@ -131,57 +131,37 @@ class _GridViewScreenState extends State<GridViewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: ThemeData(brightness: Brightness.dark),
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.blue,
-          title: const Align(
-            alignment: Alignment.center,
-            child: Text('Grid View Screen'),
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.blue,
+        title: const Align(
+          alignment: Alignment.center,
+          child: Text('List View Screen'),
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: GridView.builder(
-            itemCount: _data.length,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 5,
-                mainAxisSpacing: 5,
-                mainAxisExtent: 300),
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              return SingleChildScrollView(
-                child: Column(
+      ),
+      body: ListView.builder(
+        scrollDirection: Axis.vertical,
+        itemCount: _data.length,
+        itemBuilder: (context, index) => Card(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
                   children: [
-                    Container(
-                      width: double.infinity,
-                      height: 200,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15.0),
-                        image: DecorationImage(
-                            image: AssetImage(
-                                'assets/images/${_data[index]["imagePath"]}'),
-                            fit: BoxFit.cover),
-                      ),
+                    Image.asset(
+                      'assets/images/${_data[index]["imagePath"]}',
+                      fit: BoxFit.cover,
+                      width: 100,
+                      height: 100,
                     ),
                     const SizedBox(
-                      height: 5,
+                      width: 20,
                     ),
-                    Text(
-                      _data[index]['name'],
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    Column(
                       children: [
+                        Text(_data[index]["name"]),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
@@ -191,52 +171,46 @@ class _GridViewScreenState extends State<GridViewScreen> {
                           ),
                           onPressed: () {
                             if (index == 0) {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => DetailScreen(
-                                    imageName: _data[index]['name'],
-                                  ),
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => DetailPage(
+                                  imageName: _data[index]["name"],
                                 ),
-                              );
+                              ));
                             } else {}
                           },
                           child: const Text('Detail'),
                         ),
-                        Row(
-                          children: [
-                            IconButton(
-                              icon: const Icon(
-                                Icons.edit,
-                                color: Colors.indigo,
-                              ),
-                              onPressed: () => _showForm(_data[index]['id']),
-                            ),
-                          ],
-                        ),
-                        IconButton(
+                      ],
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    IconButton(
+                      icon: const Icon(
+                        Icons.edit,
+                        color: Colors.indigo,
+                      ),
+                      onPressed: () => _showForm(_data[index]['id']),
+                    ),
+                    IconButton(
                         icon: const Icon(
                           Icons.delete,
                           color: Colors.redAccent,
                         ),
                         onPressed: () => _deleteItem(_data[index]['id'])),
-                      ],
-                    ),
                   ],
                 ),
-              );
-            },
+              ],
+            ),
           ),
         ),
-        floatingActionButton: Container(
-          margin: const EdgeInsets.only(right: 70.0),
-          child: FloatingActionButton(
-            backgroundColor: Colors.blue.shade900,
-            foregroundColor: Colors.white,
-            onPressed: () => _showForm(null),
-            child: const Icon(Icons.add),
-          ),
-        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.blue.shade900,
+        foregroundColor: Colors.white,
+        onPressed: () => _showForm(null),
+        child: const Icon(Icons.add),
       ),
     );
   }
