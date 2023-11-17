@@ -12,12 +12,12 @@ class ListViewScreen extends StatefulWidget {
 
 class _ListViewScreenState extends State<ListViewScreen> {
   List<Map<String, dynamic>> _data = [];
+  final List<Map<String, dynamic>> _deletedItems = [];
 
   void _refreshData() async {
     final data = await SQLHelper.getItems();
     setState(() {
       _data = data;
-      
     });
   }
 
@@ -36,11 +36,24 @@ class _ListViewScreenState extends State<ListViewScreen> {
   }
 
   void _deleteItem(int id) async {
+    final deletedItem = _data.firstWhere((element) => element['id'] == id);
     await SQLHelper.deleteItem(id);
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-      backgroundColor: Colors.redAccent,
-      content: Text('Successfully Deleted'),
-    ));
+    _deletedItems.add(deletedItem);
+
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        backgroundColor: Colors.black,
+        content: const Text('Successfully Deleted'),
+        action: SnackBarAction(
+            label: "Undo",
+            onPressed: () {
+              final lastDeletedItem = _deletedItems.removeLast();
+              SQLHelper.createItem(
+                  lastDeletedItem['name'], lastDeletedItem['imagePath']);
+              _refreshData();
+            }),
+      ));
+    }
     _refreshData();
   }
 
@@ -117,8 +130,9 @@ class _ListViewScreenState extends State<ListViewScreen> {
 
                           _imagePathController.text = '';
                           _nameController.text = '';
-
-                          Navigator.of(context).pop();
+                          if (context.mounted) {
+                            Navigator.of(context).pop();
+                          }
                         },
                         child: Text(id == null ? 'Add' : 'Update'),
                       )
@@ -127,6 +141,12 @@ class _ListViewScreenState extends State<ListViewScreen> {
                 ],
               ),
             ));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _refreshData();
   }
 
   @override

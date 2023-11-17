@@ -81,7 +81,7 @@ class Validator {
   });
   final validateMessage =
       StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
-    if (value.length != 0) {
+    if (value.isNotEmpty) {
       value.length >= 8
           ? sink.add(value)
           : sink.addError('Message should be 8 characters long');

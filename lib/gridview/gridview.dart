@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 import 'detailscreen.dart';
 
-
 class GridViewScreen extends StatefulWidget {
   const GridViewScreen({super.key});
 
@@ -13,7 +12,7 @@ class GridViewScreen extends StatefulWidget {
 
 class _GridViewScreenState extends State<GridViewScreen> {
   List<Map<String, dynamic>> _data = [];
-
+  final List<Map<String, dynamic>> _deletedItems = [];
   void _refreshData() async {
     final data = await DBHelper.getItems();
     setState(() {
@@ -36,11 +35,23 @@ class _GridViewScreenState extends State<GridViewScreen> {
   }
 
   void _deleteItem(int id) async {
+    final deletedItem = _data.firstWhere((element) => element['id'] == id);
     await DBHelper.deleteItem(id);
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-      backgroundColor: Colors.redAccent,
-      content: Text('Successfully Deleted'),
-    ));
+    _deletedItems.add(deletedItem);
+
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: Colors.black,
+          content: const Text('Successfully Deleted'),
+          action: SnackBarAction(
+              label: "Undo",
+              onPressed: () {
+                final lastDeletedItem = _deletedItems.removeLast();
+                DBHelper.createItem(
+                    lastDeletedItem['name'], lastDeletedItem['imagePath']);
+                _refreshData();
+              })));
+    }
     _refreshData();
   }
 
@@ -117,8 +128,9 @@ class _GridViewScreenState extends State<GridViewScreen> {
 
                           _imagePathController.text = '';
                           _nameController.text = '';
-
-                          Navigator.of(context).pop();
+                          if (context.mounted) {
+                            Navigator.of(context).pop();
+                          }
                         },
                         child: Text(id == null ? 'Add' : 'Update'),
                       )
@@ -127,6 +139,12 @@ class _GridViewScreenState extends State<GridViewScreen> {
                 ],
               ),
             ));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _refreshData();
   }
 
   @override
@@ -203,23 +221,23 @@ class _GridViewScreenState extends State<GridViewScreen> {
                           },
                           child: const Text('Detail'),
                         ),
-                        Row(
-                          children: [
-                            IconButton(
-                              icon: const Icon(
-                                Icons.edit,
-                                color: Colors.indigo,
-                              ),
-                              onPressed: () => _showForm(_data[index]['id']),
+                        
+                        Padding(
+                          padding: const EdgeInsets.only(left:30),
+                          child: IconButton(
+                            icon: const Icon(
+                              Icons.edit,
+                              color: Colors.indigo,
                             ),
-                          ],
+                            onPressed: () => _showForm(_data[index]['id']),
+                          ),
                         ),
                         IconButton(
-                        icon: const Icon(
-                          Icons.delete,
-                          color: Colors.redAccent,
-                        ),
-                        onPressed: () => _deleteItem(_data[index]['id'])),
+                            icon: const Icon(
+                              Icons.delete,
+                              color: Colors.redAccent,
+                            ),
+                            onPressed: () => _deleteItem(_data[index]['id'])),
                       ],
                     ),
                   ],
