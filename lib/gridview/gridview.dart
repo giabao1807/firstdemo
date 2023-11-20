@@ -41,7 +41,7 @@ class _GridViewScreenState extends State<GridViewScreen> {
 
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          backgroundColor: Colors.black,
+          backgroundColor: Colors.white,
           content: const Text('Successfully Deleted'),
           action: SnackBarAction(
               label: "Undo",
@@ -128,6 +128,7 @@ class _GridViewScreenState extends State<GridViewScreen> {
 
                           _imagePathController.text = '';
                           _nameController.text = '';
+
                           if (context.mounted) {
                             Navigator.of(context).pop();
                           }
@@ -221,9 +222,8 @@ class _GridViewScreenState extends State<GridViewScreen> {
                           },
                           child: const Text('Detail'),
                         ),
-                        
                         Padding(
-                          padding: const EdgeInsets.only(left:30),
+                          padding: const EdgeInsets.only(left: 30),
                           child: IconButton(
                             icon: const Icon(
                               Icons.edit,

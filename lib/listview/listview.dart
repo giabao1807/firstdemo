@@ -130,6 +130,7 @@ class _ListViewScreenState extends State<ListViewScreen> {
 
                           _imagePathController.text = '';
                           _nameController.text = '';
+                          
                           if (context.mounted) {
                             Navigator.of(context).pop();
                           }
