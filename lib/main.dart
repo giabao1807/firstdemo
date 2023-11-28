@@ -1,6 +1,7 @@
-import 'package:firstdemo/MVVM/src/view/user_view.dart';
+
 import 'package:firstdemo/mvc_pattern.dart';
 import 'package:firstdemo/mvp_pttern.dart';
+import 'package:firstdemo/mvvm_pattern.dart';
 
 
 import 'package:flutter/material.dart';
@@ -243,7 +244,7 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => MVVMScreen(),
+                                  builder: (context) => const MVVMScreen(),
                                 ),
                               );
                             },

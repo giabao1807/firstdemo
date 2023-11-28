@@ -1,39 +1,53 @@
-// main.dart
-import 'package:firstdemo/MVVM/src/view%20model/user_viewmodel.dart';
+import 'package:firstdemo/MVVM/src/viewmodel/user_viewmodel.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-
-
-
-class MVVMScreen extends StatelessWidget {
-  final UserViewModel _userViewModel = UserViewModel();
-
-   MVVMScreen({super.key});
+class UserView extends StatelessWidget {
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _ageController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('MVVM Example'),
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('Name: ${_userViewModel.user.name}'),
-              Text('Age: ${_userViewModel.user.age}'),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  _userViewModel.updateUser('John Doe', 30);
-                },
-                child: const Text('Update User'),
-              ),
-            ],
+    return Consumer<UserViewModel>(
+      builder: (context, userViewModel, child) {
+        return Scaffold(
+          body: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Username: ${userViewModel.userData.username}\nAge: ${userViewModel.userData.age}',
+                  style: const TextStyle(fontSize: 18),
+                ),
+                const SizedBox(height: 20),
+                TextField(
+                  controller: _usernameController,
+                  decoration: const InputDecoration(labelText: 'Enter Username'),
+                ),
+                TextField(
+                  controller: _ageController,
+                  decoration: const InputDecoration(labelText: 'Enter Age'),
+                  keyboardType: TextInputType.number,
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    userViewModel.updateUsername(_usernameController.text);
+                  },
+                  child: const Text('Update Username'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    userViewModel.updateAge(int.parse(_ageController.text));
+                  },
+                  child: const Text('Update Age'),
+                ),
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
