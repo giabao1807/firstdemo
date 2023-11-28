@@ -2,51 +2,51 @@
   {
     "id": 1,
     "name": "Con thỏ 1",
-    "imagePath": "2.jpg"
+    "imagePath": "1.jpg"
   },
   {
     "id": 2,
     "name": "Con mèo 1",
-    "imagePath": "3.jpg"
+    "imagePath": "2.jpg"
   },
   {
     "id": 3,
     "name": "Con cáo",
-    "imagePath": "4.jpg"
+    "imagePath": "3.jpg"
   },
   {
     "id": 4,
     "name": "Con gấu",
-    "imagePath": "5.jpg"
+    "imagePath": "4.jpg"
   },
   {
     "id": 5,
     "name": "Con mèo 2",
-    "imagePath": "6.jpg"
+    "imagePath": "5.jpg"
   },
   {
     "id": 6,
     "name": "Con thỏ 2",
-    "imagePath": "7.jpg"
+    "imagePath": "6.jpg"
   },
   {
     "id": 7,
     "name": "Con mèo 3",
-    "imagePath": "8.jpg"
+    "imagePath": "7.jpg"
   },
   {
     "id": 8,
     "name": "Con khủng long",
-    "imagePath": "9.jpg"
+    "imagePath": "8.jpg"
   },
   {
     "id": 9,
     "name": "Con panda",
-    "imagePath": "10.png"
+    "imagePath": "9.jpg"
   },
   {
     "id": 10,
     "name": "Con cáo 1",
-    "imagePath": "11.jpg"
+    "imagePath": "10.jpg"
   }
 ]

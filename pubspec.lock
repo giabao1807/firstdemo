@@ -222,7 +222,7 @@ packages:
     source: hosted
     version: "0.15.4"
   http:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: http
       sha256: "759d1a329847dd0f39226c688d3e06a6b8679668e350e2891a6474f8b4bb8525"
@@ -285,6 +285,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.9.1"
+  mvc_pattern:
+    dependency: "direct main"
+    description:
+      name: mvc_pattern
+      sha256: "4a4eb65f0d364fa84cd596593260ff58416f95d32eba5c008b8bb83bdab53fa9"
+      url: "https://pub.dev"
+    source: hosted
+    version: "8.12.0"
+  mvvm:
+    dependency: "direct main"
+    description:
+      name: mvvm
+      sha256: "18dbca5d5e77b465c188e5f0fe900c42e0ec79f2db8124930d29cdc88aa6048c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.5.2"
   nested:
     dependency: transitive
     description:
@@ -382,13 +398,13 @@ packages:
     source: hosted
     version: "2.1.6"
   provider:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: provider
-      sha256: "659adaefa8196fa2799d7ac3dca3c2e831e549dc40b082d07a599fe9150d75fc"
+      sha256: "9a96a0a19b594dbc5bf0f1f27d2bc67d5f95957359b461cd9feb44ed6ae75096"
       url: "https://pub.dev"
     source: hosted
-    version: "6.1.0"
+    version: "6.1.1"
   rxdart:
     dependency: "direct main"
     description:
@@ -538,6 +554,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.2"
+  universal_platform:
+    dependency: transitive
+    description:
+      name: universal_platform
+      sha256: d315be0f6641898b280ffa34e2ddb14f3d12b1a37882557869646e0cc363d0cc
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0+1"
   uuid:
     dependency: transitive
     description:
